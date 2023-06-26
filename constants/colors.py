@@ -1,0 +1,2 @@
+BLACK = 'black'
+WHITE = 'white'
