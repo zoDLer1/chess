@@ -1,8 +1,12 @@
 from app import App
-from map import Map
+from map import ChessBoard
+from server import Server, Client
 
 if __name__ == '__main__':
+    # Server()
+    # Client()
+    
     app = App()
     
-    map = Map(app)
+    map = ChessBoard(app)
     app.mainloop()

@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from map import Map
+    from map import ChessBoard
 
 
 Images = []
@@ -16,10 +16,10 @@ class GameObject:
     def get_path(self):
         return self.path
 
-    def onObjectClicked():
+    def on_object_clicked():
         pass
     
-    def __init__(self, map: 'Map', column: int, row: int):
+    def __init__(self, map: 'ChessBoard', column: int, row: int):
         self.map = map
         self.row = row
         self.column = column

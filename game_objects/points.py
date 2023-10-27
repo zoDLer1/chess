@@ -16,8 +16,8 @@ class Point(GameObject):
         self.owner = owner
         self.owner.points.append(self)
 
-    def onObjectClicked(self):
-        self.owner.moveToPoint(self)
+    def on_object_clicked(self):
+        self.owner.move_to_point(self)
 
 class AttackPoint(Point):
     path = r'images/points/attack_point.png'
@@ -30,17 +30,17 @@ class AttackPoint(Point):
         super().destroy()
         self.map.update_field(self.column, self.row, self.target)
     
-    def onObjectClicked(self):
-        super().onObjectClicked()
+    def on_object_clicked(self):
+        super().on_object_clicked()
         self.target.destroy()
 
 class CastlingPoint(AttackPoint):
     path = r'images/points/castle_point.png'
-    def onObjectClicked(self):
+    def on_object_clicked(self):
         if self.relative_direction.up > 0:
-            self.owner.moveToPosition(self.owner.column + 1, self.owner.row, self.relative_direction)
-            self.target.moveToPosition(self.target.column - 3, self.target.row, self.relative_direction.reverse())
+            self.owner.move_to_position(self.owner.column + 1, self.owner.row, self.relative_direction)
+            self.target.move_to_position(self.target.column - 3, self.target.row, self.relative_direction.reverse())
         elif self.relative_direction.up < 0:
-            self.owner.moveToPosition(self.owner.column - 2, self.owner.row, self.relative_direction)
-            self.target.moveToPosition(self.target.column + 3, self.target.row, self.relative_direction.reverse())
+            self.owner.move_to_position(self.owner.column - 2, self.owner.row, self.relative_direction)
+            self.target.move_to_position(self.target.column + 3, self.target.row, self.relative_direction.reverse())
    

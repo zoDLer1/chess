@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class ViewDirectionDebugManager:
 
     X_FACTOR = 1
@@ -17,7 +14,6 @@ class ViewDirectionDebugManager:
         -1: '←',
         0: '·'
     }
-
 
     def __init__(self, offset_x, offset_y) -> None:
         self.view = self.DIAGONALS_IDS.get(offset_x * self.X_FACTOR + offset_y * self.Y_FACTOR, 'uncalc')
@@ -39,7 +35,6 @@ class Direction:
 
     def reverse(self):
         return Direction(-self.up, -self.left)
-
 
     @classmethod
     def nw(cls):

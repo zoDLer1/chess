@@ -11,7 +11,14 @@ if TYPE_CHECKING:
     
 
 
-class Map:
+class ChessBoard:
+
+    def __init__(self, root) -> None:
+        self.fields = []
+        self.active = None
+        self.has_action = False
+        self.root = root
+        self.render()
 
     def movement(self, obj: 'Figure', x, y, direction: 'Direction'):
         self.has_action = True
@@ -27,16 +34,8 @@ class Map:
             obj.update_position(column, row)
             self.has_action = False
 
-    def __init__(self, root) -> None:
-        self.fields = []
-        self.active = None
-        self.has_action = False
-        self.root = root
-        self.render()
-
     def render(self):
-        self.canvas = Canvas(self.root, bg='lightblue', highlightthickness=0,
-                             width=GAME_SIZE * MAP_WIDTH, height=GAME_SIZE * MAP_HEIGHT)
+        self.canvas = Canvas(self.root, bg='lightblue', highlightthickness=0, width=GAME_SIZE * MAP_WIDTH, height=GAME_SIZE * MAP_HEIGHT)
         self.canvas.pack(anchor='w')
         x = 0
         y = 0
@@ -44,33 +43,39 @@ class Map:
             row_fields = []
             for column in range(0, MAP_HEIGHT):
                 self.canvas.create_rectangle(
-                    x, y, x + GAME_SIZE, y + GAME_SIZE, fill=self.get_color(row, column), width=0)
+                    x, y, x + GAME_SIZE, y + GAME_SIZE, fill=self.get_field_color(row, column), width=0)
                 row_fields.append(None)
                 x = x + GAME_SIZE
             self.fields.append(row_fields)
             y = y + GAME_SIZE
             x = 0
-        self.canvas.bind_all('<Button-1>', self.onClick)
+        self.canvas.bind_all('<Button-1>', self.on_click)
         self.spawn()
 
     def spawn(self):
-        # Pawn(self, 1, 2, BLACK)
+        Pawn(self, 1, 2, BLACK)
         Queen(self, 5, 5, BLACK)
         King(self, 4, 7, WHITE)
         # Bishop(self, 5, 7, WHITE)
         # Knight(self, 3, 3, WHITE)
         # Rook(self, 0, 7, WHITE)
         # Rook(self, 7, 7, WHITE)
-        
 
     @staticmethod
-    def get_color(column, row):
+    def get_field_color(column, row):
         return WHITE if (row-column) % 2 == 0 else BLACK
 
     def get_field(self, column, row):
         return self.fields[column][row]
 
-    def onClick(self, evt):
+    def get_figure(self, current_column, current_row):
+        object = self.get_field(current_column, current_row)
+        if object and isinstance(object, Figure):
+            return object
+        
+
+
+    def on_click(self, evt):
         if not self.has_action:
             x = self.canvas.winfo_pointerx() - self.canvas.winfo_rootx()
             y = self.canvas.winfo_pointery() - self.canvas.winfo_rooty()
@@ -85,7 +90,7 @@ class Map:
                 print(object)
                 if isinstance(object, Figure):
                     self.active = object
-                object.onObjectClicked()
+                object.on_object_clicked()
 
     def remove_field_value(self, column, row, obj_id):
         self.fields[column][row] = None
